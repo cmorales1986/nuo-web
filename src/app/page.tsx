@@ -7,6 +7,9 @@ import { GaleriaSection } from "./galeria-section";
 import { TratamientosSection } from "./tratamientos-section";
 import { Reveal } from "./reveal";
 import { HeroParallax } from "./hero-parallax";
+import { HeroCarousel } from "./hero-carousel";
+
+const HERO_IMAGENES = ["/hero-tratamiento.jpg", "/especialidad-clinic.jpg", "/especialidad-spa.jpg"];
 
 export const dynamic = "force-dynamic";
 
@@ -17,11 +20,9 @@ export default async function Home() {
   return (
     <main>
       {/* Hero */}
-      <section style={{ position: "relative", height: "78vh", minHeight: 480, display: "flex", alignItems: "flex-end", overflow: "hidden" }}>
+      <section style={{ position: "relative", height: "92vh", minHeight: 560, display: "flex", alignItems: "flex-end", overflow: "hidden" }}>
         <HeroParallax>
-          <div style={{ position: "absolute", inset: 0, animation: "nuo-kenburns 16s ease-out forwards" }}>
-            <Image src="/hero-tratamiento.jpg" alt="" fill priority style={{ objectFit: "cover" }} />
-          </div>
+          <HeroCarousel imagenes={HERO_IMAGENES} />
         </HeroParallax>
         <div
           style={{

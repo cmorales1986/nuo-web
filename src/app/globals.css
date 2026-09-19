@@ -120,6 +120,15 @@ html {
   }
 }
 
+@keyframes nuo-kenburns-loop {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
 @keyframes nuo-fade-up {
   from {
     opacity: 0;
@@ -168,6 +177,13 @@ html {
   color: var(--nuo-terracota);
   font-weight: 600;
   margin-bottom: 10px;
+}
+
+/* El header pasa a position:fixed (para poder flotar transparente sobre
+   el hero de la home) — toda página SIN hero propio necesita este espacio
+   reservado arriba para no quedar tapada. */
+.nuo-below-header {
+  padding-top: 82px;
 }
 
 .nuo-section {

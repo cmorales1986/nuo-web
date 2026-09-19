@@ -18,7 +18,7 @@ export default function CarritoPage() {
   const total = items.reduce((s, i) => s + i.precioVenta * i.cantidad, 0);
 
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "48px 16px" }}>
+    <div className="nuo-below-header" style={{ maxWidth: 900, margin: "0 auto", padding: "48px 16px" }}>
       {items.length === 0 ? (
         <Empty description="Tu carrito está vacío" style={{ marginTop: 60 }}>
           <Link href="/tienda">

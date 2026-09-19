@@ -110,5 +110,9 @@ export default function CheckoutPage() {
     );
   };
 
-  return <div style={{ maxWidth: 1000, margin: "0 auto", padding: "48px 16px" }}>{contenido()}</div>;
+  return (
+    <div className="nuo-below-header" style={{ maxWidth: 1000, margin: "0 auto", padding: "48px 16px" }}>
+      {contenido()}
+    </div>
+  );
 }
