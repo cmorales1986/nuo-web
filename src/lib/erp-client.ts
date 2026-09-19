@@ -55,3 +55,53 @@ export async function crearPedido(payload: PedidoOnlinePayload): Promise<{ numer
   if (!res.ok) throw new Error(data.error ?? "No se pudo registrar el pedido.");
   return data;
 }
+
+export type ServicioAgenda = { id: string; nombre: string; descripcion: string | null; duracionMinutos: number; precioVenta: string };
+export type ProfesionalAgenda = { id: string; nombre: string; especialidad: string | null; sucursalId: string; sucursalNombre: string };
+export type SlotDisponible = { inicio: string; fin: string };
+export type ReservaPayload = {
+  servicioId: string;
+  profesionalId: string;
+  fechaInicio: string;
+  fechaFin: string;
+  nombre: string;
+  telefono: string;
+  correo?: string;
+  observaciones?: string;
+};
+
+async function get<T>(path: string): Promise<T> {
+  const { baseUrl, secret } = config();
+  const res = await fetch(`${baseUrl}${path}`, { headers: { "X-Tienda-Secret": secret }, cache: "no-store" });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error ?? "No se pudo cargar la agenda.");
+  return data;
+}
+
+export async function obtenerServiciosAgenda(): Promise<ServicioAgenda[]> {
+  const data = await get<{ servicios: ServicioAgenda[] }>("/api/agenda-publica/servicios");
+  return data.servicios;
+}
+
+export async function obtenerProfesionalesAgenda(servicioId: string): Promise<ProfesionalAgenda[]> {
+  const data = await get<{ profesionales: ProfesionalAgenda[] }>(`/api/agenda-publica/profesionales?servicioId=${encodeURIComponent(servicioId)}`);
+  return data.profesionales;
+}
+
+export async function obtenerDisponibilidad(params: { profesionalId: string; duracionMinutos: number; fecha: string }): Promise<SlotDisponible[]> {
+  const qs = new URLSearchParams({ profesionalId: params.profesionalId, duracionMinutos: String(params.duracionMinutos), fecha: params.fecha });
+  const data = await get<{ slots: SlotDisponible[] }>(`/api/agenda-publica/disponibilidad?${qs.toString()}`);
+  return data.slots;
+}
+
+export async function crearReserva(payload: ReservaPayload): Promise<{ ok?: boolean }> {
+  const { baseUrl, secret } = config();
+  const res = await fetch(`${baseUrl}/api/agenda-publica/reservar`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-Tienda-Secret": secret },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error ?? "No se pudo registrar la reserva.");
+  return data;
+}

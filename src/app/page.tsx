@@ -57,11 +57,11 @@ export default async function Home() {
                 Ver tienda
               </Button>
             </Link>
-            <a href="https://lite.agendia.co/nuoesthetic" target="_blank" rel="noreferrer">
+            <Link href="/reservar">
               <Button size="large" ghost className="nuo-btn-animated">
                 Reservar mi turno
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

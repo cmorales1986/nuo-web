@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { HeartOutlined } from "@ant-design/icons";
 import { CarritoBoton } from "./tienda/carrito-boton";
 
-const AGENDIA_URL = "https://lite.agendia.co/nuoesthetic";
 const ALTO_HEADER = 82;
 
 /** Mismo comportamiento que nuo.com.py: el header se esconde al bajar y reaparece al subir. */
@@ -88,10 +87,8 @@ export function SiteHeader() {
           Contacto
         </Link>
         <CarritoBoton claro={transparente} />
-        <a
-          href={AGENDIA_URL}
-          target="_blank"
-          rel="noreferrer"
+        <Link
+          href="/reservar"
           className="nuo-btn-animated"
           style={{
             display: "flex",
@@ -111,7 +108,7 @@ export function SiteHeader() {
           }}
         >
           <HeartOutlined /> Reserva tu cita
-        </a>
+        </Link>
       </nav>
     </header>
   );
