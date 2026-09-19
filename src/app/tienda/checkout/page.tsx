@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Form, Input, Radio, Button, Typography, Empty, Result, App } from "antd";
+import { Form, Input, Radio, Button, Typography, Empty, Result, App, Card } from "antd";
 import { useCarrito } from "../cart-context";
 import { accionCrearPedidoOnline } from "../actions";
 
@@ -22,7 +22,7 @@ export default function CheckoutPage() {
 
   const total = items.reduce((s, i) => s + i.precioVenta * i.cantidad, 0);
 
-  async function confirmar(valores: any) {
+  async function confirmar(valores: { nombre: string; telefono: string; correo?: string; direccion?: string; metodoPago: "transferencia" | "contra_entrega" }) {
     setEnviando(true);
     try {
       const resultado = await accionCrearPedidoOnline({
@@ -72,7 +72,7 @@ export default function CheckoutPage() {
     }
 
     return (
-      <div style={{ maxWidth: 480, margin: "0 auto" }}>
+      <Card style={{ maxWidth: 480, margin: "0 auto", borderRadius: 10, border: "1px solid #f0eeeb" }}>
         <Title level={2}>Confirmar pedido</Title>
         <Text type="secondary" style={{ display: "block", marginBottom: 20 }}>Total: {formatearGs(total)}</Text>
         <Form form={form} layout="vertical" onFinish={confirmar} disabled={enviando}>
@@ -106,9 +106,9 @@ export default function CheckoutPage() {
             Confirmar pedido
           </Button>
         </Form>
-      </div>
+      </Card>
     );
   };
 
-  return <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 16px" }}>{contenido()}</div>;
+  return <div style={{ maxWidth: 1000, margin: "0 auto", padding: "48px 16px" }}>{contenido()}</div>;
 }

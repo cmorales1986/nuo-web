@@ -22,9 +22,13 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ItemCarrito[]>([]);
   const [cargado, setCargado] = useState(false);
 
+  // A propósito en un efecto (no lazy-init de useState): el server siempre
+  // renderiza el carrito vacío, así que hidratar sincrónicamente desde
+  // localStorage en el primer render del cliente rompería la hidratación.
   useEffect(() => {
     try {
       const guardado = localStorage.getItem(CLAVE_STORAGE);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (guardado) setItems(JSON.parse(guardado));
     } catch {
       // localStorage puede fallar (privado/bloqueado) — el carrito arranca vacío, no rompe la página.

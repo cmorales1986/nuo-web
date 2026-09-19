@@ -5,6 +5,7 @@ import { ConfigProvider, App as AntApp } from "antd";
 import esES from "antd/locale/es_ES";
 import { CarritoProvider } from "./tienda/cart-context";
 import { SiteHeader } from "./site-header";
+import { SiteFooter } from "./site-footer";
 import "./globals.css";
 
 // Misma tipografía real de nuo.com.py (relevada en vivo): Fraunces para
@@ -44,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <CarritoProvider>
                 <SiteHeader />
                 {children}
-                <footer style={{ textAlign: "center", padding: 24, color: "#8c8c8c", fontSize: 12 }}>Nuo Esthetic — centro médico-estético y spa</footer>
+                <SiteFooter />
               </CarritoProvider>
             </AntApp>
           </ConfigProvider>

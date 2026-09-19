@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Table, Button, InputNumber, Typography, Empty, Space } from "antd";
+import { Table, Button, InputNumber, Typography, Empty, Space, Card } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useCarrito } from "../cart-context";
 
@@ -18,16 +18,16 @@ export default function CarritoPage() {
   const total = items.reduce((s, i) => s + i.precioVenta * i.cantidad, 0);
 
   return (
-    <div style={{ maxWidth: 1000, margin: "0 auto", padding: "32px 16px" }}>
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: "48px 16px" }}>
       {items.length === 0 ? (
-        <Empty description="Tu carrito está vacío">
+        <Empty description="Tu carrito está vacío" style={{ marginTop: 60 }}>
           <Link href="/tienda">
             <Button type="primary">Ver productos</Button>
           </Link>
         </Empty>
       ) : (
-        <>
-          <Title level={2}>Tu carrito</Title>
+        <Card style={{ borderRadius: 10, border: "1px solid #f0eeeb" }}>
+          <Title level={2} style={{ marginBottom: 20 }}>Tu carrito</Title>
           <Table
             rowKey="productoId"
             dataSource={items}
@@ -55,7 +55,7 @@ export default function CarritoPage() {
               </Button>
             </Space>
           </Space>
-        </>
+        </Card>
       )}
     </div>
   );

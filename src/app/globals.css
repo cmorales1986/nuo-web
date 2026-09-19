@@ -45,3 +45,70 @@ h3 {
   font-weight: 500;
   letter-spacing: 0.02em;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.nuo-nav-link {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--nuo-taupe);
+  transition: color 0.15s ease;
+}
+
+.nuo-nav-link:hover {
+  color: var(--nuo-terracota);
+}
+
+.nuo-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nuo-terracota);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.nuo-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 24px;
+}
+
+.nuo-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+.nuo-stat-grid strong {
+  display: block;
+  font-family: var(--font-heading), serif;
+  font-size: 36px;
+  color: var(--nuo-terracota);
+}
+
+.nuo-especialidad-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 720px) {
+  .nuo-footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .nuo-stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .nuo-especialidad-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .nuo-galeria-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
