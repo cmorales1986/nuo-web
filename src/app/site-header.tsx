@@ -56,6 +56,7 @@ export function SiteHeader() {
           href={AGENDIA_URL}
           target="_blank"
           rel="noreferrer"
+          className="nuo-btn-animated"
           style={{
             display: "flex",
             alignItems: "center",

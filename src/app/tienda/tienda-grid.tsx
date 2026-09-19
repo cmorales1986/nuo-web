@@ -34,19 +34,22 @@ export function TiendaGrid({ productos, ocultarTitulo }: { productos: ProductoTi
             <Col xs={24} sm={12} md={8} key={p.id}>
               <Card
                 hoverable
+                className="nuo-card-lift"
                 style={{ borderRadius: 10, overflow: "hidden", border: "1px solid #f0eeeb" }}
                 styles={{ body: { padding: 16 } }}
                 cover={
                   p.imagenUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.imagenUrl} alt={p.nombre} style={{ height: 220, objectFit: "cover" }} />
+                    <div className="nuo-hover-zoom">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.imagenUrl} alt={p.nombre} style={{ height: 220, width: "100%", objectFit: "cover", display: "block" }} />
+                    </div>
                   ) : (
                     <div style={{ height: 220, background: "#F7F4F1", display: "flex", alignItems: "center", justifyContent: "center", color: "#c9c2be" }}>Sin foto</div>
                   )
                 }
               >
                 <Card.Meta
-                  title={<span style={{ fontFamily: "var(--font-heading), serif", fontWeight: 500 }}>{p.nombre}</span>}
+                  title={<span style={{ fontFamily: "var(--font-heading), serif", fontWeight: 400 }}>{p.nombre}</span>}
                   description={
                     <>
                       <Text type="secondary" style={{ display: "block", minHeight: 40, fontSize: 13 }}>{p.descripcion || " "}</Text>

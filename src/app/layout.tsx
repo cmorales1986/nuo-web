@@ -8,10 +8,17 @@ import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import "./globals.css";
 
-// Misma tipografía real de nuo.com.py (relevada en vivo): Fraunces para
-// títulos (serif editorial, el estilo "UN REFUGIO DE CALMA..." del hero),
-// Jost para texto de cuerpo. Sitio distinto del ERP, misma identidad.
-const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-heading", weight: ["400", "500", "600"] });
+// Misma tipografía real de nuo.com.py (relevada en vivo, incluido el peso
+// exacto: TODO el texto ahí —títulos y párrafos— corre en weight 300, con
+// el eje óptico "opsz" al máximo en los títulos grandes para ese trazo
+// fino y editorial). Fraunces para títulos, Jost para cuerpo.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  weight: "variable",
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+});
 const jost = Jost({ subsets: ["latin"], variable: "--font-body", weight: ["300", "400", "500", "600"] });
 
 export const metadata: Metadata = {

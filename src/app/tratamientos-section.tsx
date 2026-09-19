@@ -114,7 +114,7 @@ function TarjetasTratamiento({ items }: { items: Tratamiento[] }) {
       {conPrecio.length > 0 && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16, marginBottom: sinPrecio.length ? 24 : 0 }}>
           {conPrecio.map((t) => (
-            <Card key={t.nombre} style={{ borderRadius: 10, border: "1px solid #f0eeeb" }} styles={{ body: { padding: 20 } }}>
+            <Card key={t.nombre} className="nuo-card-lift" style={{ borderRadius: 10, border: "1px solid #f0eeeb" }} styles={{ body: { padding: 20 } }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
                 <h3 style={{ fontSize: 17, margin: 0 }}>{t.nombre}</h3>
                 <Text strong style={{ color: "var(--nuo-terracota)", whiteSpace: "nowrap" }}>
