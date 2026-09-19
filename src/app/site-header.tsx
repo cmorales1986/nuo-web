@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { HeartOutlined } from "@ant-design/icons";
@@ -7,7 +8,28 @@ import { CarritoBoton } from "./tienda/carrito-boton";
 
 const AGENDIA_URL = "https://lite.agendia.co/nuoesthetic";
 
+/** Mismo comportamiento que nuo.com.py: el header se esconde al bajar y reaparece al subir (nunca abajo del todo hasta pasar el hero). */
+function useAutoHideHeader() {
+  const [oculto, setOculto] = useState(false);
+  const ultimoScroll = useRef(0);
+
+  useEffect(() => {
+    function onScroll() {
+      const actual = window.scrollY;
+      const bajando = actual > ultimoScroll.current;
+      setOculto(bajando && actual > 160);
+      ultimoScroll.current = actual;
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return oculto;
+}
+
 export function SiteHeader() {
+  const oculto = useAutoHideHeader();
+
   return (
     <header
       style={{
@@ -23,6 +45,8 @@ export function SiteHeader() {
         position: "sticky",
         top: 0,
         zIndex: 10,
+        transform: oculto ? "translateY(-100%)" : "translateY(0)",
+        transition: "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
       <Link href="/" style={{ display: "flex", alignItems: "center" }}>

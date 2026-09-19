@@ -6,6 +6,7 @@ import { TiendaGrid } from "./tienda/tienda-grid";
 import { GaleriaSection } from "./galeria-section";
 import { TratamientosSection } from "./tratamientos-section";
 import { Reveal } from "./reveal";
+import { HeroParallax } from "./hero-parallax";
 
 export const dynamic = "force-dynamic";
 
@@ -17,9 +18,11 @@ export default async function Home() {
     <main>
       {/* Hero */}
       <section style={{ position: "relative", height: "78vh", minHeight: 480, display: "flex", alignItems: "flex-end", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, animation: "nuo-kenburns 16s ease-out forwards" }}>
-          <Image src="/hero-tratamiento.jpg" alt="" fill priority style={{ objectFit: "cover" }} />
-        </div>
+        <HeroParallax>
+          <div style={{ position: "absolute", inset: 0, animation: "nuo-kenburns 16s ease-out forwards" }}>
+            <Image src="/hero-tratamiento.jpg" alt="" fill priority style={{ objectFit: "cover" }} />
+          </div>
+        </HeroParallax>
         <div
           style={{
             position: "absolute",
@@ -75,9 +78,18 @@ export default async function Home() {
                 Trabajamos con un enfoque integral, ofreciendo atención personalizada y servicios de alta calidad a
                 través de un equipo interdisciplinario de profesionales altamente capacitados.
               </p>
-              <p style={{ color: "var(--nuo-taupe)", lineHeight: 1.8, fontWeight: 300 }}>
+              <p style={{ color: "var(--nuo-taupe)", lineHeight: 1.8, marginBottom: 16, fontWeight: 300 }}>
                 Nuestra propuesta se basa en un acompañamiento seguro, humano y ético, con los más altos estándares de
                 atención y resultados visibles que transforman la vida de nuestros pacientes.
+              </p>
+              <p style={{ color: "var(--nuo-taupe)", lineHeight: 1.8, marginBottom: 16, fontWeight: 300 }}>
+                Hoy, seguimos creciendo con la apertura de una nueva sucursal enfocada en el bienestar y la relajación:
+                un Spa Médico que combina tecnología, confort y tratamientos personalizados para que vivas una
+                experiencia única de cuidado y renovación.
+              </p>
+              <p style={{ color: "var(--nuo-taupe)", lineHeight: 1.8, fontWeight: 300 }}>
+                Creemos que la verdadera belleza comienza con el equilibrio interior. Por eso, cada detalle de nuestro
+                centro está pensado para potenciar tu salud, tu confianza y tu bienestar.
               </p>
             </Reveal>
           </Col>
@@ -115,6 +127,18 @@ export default async function Home() {
       {/* Galería / equipo */}
       <section id="equipo" className="nuo-section" style={{ paddingTop: 0 }}>
         <Reveal>
+          <span className="nuo-eyebrow">Atención profesional</span>
+          <h2 style={{ fontSize: "clamp(26px, 3vw, 34px)", marginBottom: 12, maxWidth: 640 }}>Un equipo interdisciplinario a tu lado</h2>
+          <p style={{ color: "var(--nuo-taupe)", maxWidth: 640, marginBottom: 12, lineHeight: 1.8, fontWeight: 300 }}>
+            Contamos con un equipo interdisciplinario de profesionales altamente especializados, con amplia trayectoria
+            y formación constante a nivel nacional e internacional.
+          </p>
+          <p style={{ color: "var(--nuo-taupe)", maxWidth: 640, marginBottom: 36, lineHeight: 1.8, fontWeight: 300 }}>
+            Trabajamos en conjunto para ofrecer un abordaje integral, donde la salud, la estética y el bienestar se
+            complementan para potenciar lo mejor de cada persona.
+          </p>
+        </Reveal>
+        <Reveal delay={100}>
           <GaleriaSection />
         </Reveal>
       </section>
@@ -123,11 +147,11 @@ export default async function Home() {
       <section style={{ background: "#F7F4F1" }}>
         <div className="nuo-section">
           <Reveal>
-            <span className="nuo-eyebrow">Atención profesional</span>
+            <span className="nuo-eyebrow">Dos espacios, un mismo cuidado</span>
             <h2 style={{ fontSize: "clamp(26px, 3vw, 34px)", marginBottom: 12 }}>Nuestras especialidades</h2>
             <p style={{ color: "var(--nuo-taupe)", maxWidth: 620, marginBottom: 36, lineHeight: 1.8, fontWeight: 300 }}>
-              Contamos con un equipo interdisciplinario donde la salud, la estética y el bienestar se complementan para
-              potenciar lo mejor de cada persona.
+              Nuo Clinic para lo médico-estético y Nuo Spa para el bienestar y la relajación — cada sucursal con su
+              propio enfoque, bajo el mismo estándar de calidad y atención personalizada.
             </p>
           </Reveal>
           <div className="nuo-especialidad-grid">
