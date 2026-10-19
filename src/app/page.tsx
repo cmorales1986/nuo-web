@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button, Row, Col } from "antd";
-import { obtenerProductos } from "../lib/erp-client";
+import { obtenerProductos, obtenerServiciosAgenda, type ServicioAgenda } from "../lib/erp-client";
 import { TiendaGrid } from "./tienda/tienda-grid";
 import { GaleriaSection } from "./galeria-section";
 import { TratamientosSection } from "./tratamientos-section";
@@ -16,6 +16,8 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const productos = await obtenerProductos();
   const destacados = productos.slice(0, 3);
+  // Si la agenda no responde, la portada sigue funcionando: los tratamientos llevan a /reservar sin servicio preelegido.
+  const servicios: ServicioAgenda[] = await obtenerServiciosAgenda().catch(() => []);
 
   return (
     <main>
@@ -52,14 +54,14 @@ export default async function Home() {
             equipo interdisciplinario reconocido a nivel nacional e internacional.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <Link href="/tienda">
+            <Link href="/reservar">
               <Button type="primary" size="large" className="nuo-btn-animated">
-                Ver tienda
+                Reservar mi turno
               </Button>
             </Link>
-            <Link href="/reservar">
+            <Link href="/tienda">
               <Button size="large" ghost className="nuo-btn-animated">
-                Reservar mi turno
+                Ver tienda
               </Button>
             </Link>
           </div>
@@ -211,7 +213,7 @@ export default async function Home() {
           </p>
         </Reveal>
         <Reveal delay={100}>
-          <TratamientosSection />
+          <TratamientosSection servicios={servicios} productos={productos} />
         </Reveal>
       </section>
 
@@ -239,21 +241,28 @@ export default async function Home() {
           <div className="nuo-section" style={{ textAlign: "center" }}>
             <h2 style={{ color: "#fff", fontSize: "clamp(24px, 3vw, 32px)", marginBottom: 14 }}>Reservá tu turno</h2>
             <p style={{ maxWidth: 520, margin: "0 auto 28px", opacity: 0.92, lineHeight: 1.8, fontWeight: 300 }}>
-              Escribinos por WhatsApp y coordinamos tu cita en Nuo Clinic o Nuo Spa según el tratamiento que buscás.
+              Elegí tu tratamiento, el horario que mejor te quede y listo: tu cita en Nuo Clinic o Nuo Spa queda registrada al instante.
             </p>
-            <a
-              href="https://wa.me/595971203800?text=Hola%2C%20quiero%20agendar%20un%20turno.."
-              target="_blank"
-              rel="noreferrer"
-            >
+            <Link href="/reservar">
               <Button
                 size="large"
                 className="nuo-btn-animated"
                 style={{ background: "#fff", color: "var(--nuo-terracota)", border: "none", fontWeight: 600 }}
               >
-                Escribir por WhatsApp
+                Reservar mi turno
               </Button>
-            </a>
+            </Link>
+            <p style={{ margin: "22px 0 0", fontSize: 14, opacity: 0.92, fontWeight: 300 }}>
+              ¿Tenés dudas?{" "}
+              <a
+                href="https://wa.me/595971203800?text=Hola%2C%20tengo%20una%20consulta."
+                target="_blank"
+                rel="noreferrer"
+                style={{ color: "#fff", textDecoration: "underline", fontWeight: 500 }}
+              >
+                Escribinos por WhatsApp
+              </a>
+            </p>
           </div>
         </Reveal>
       </section>

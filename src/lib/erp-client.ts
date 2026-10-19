@@ -13,6 +13,8 @@ export type ProductoTienda = {
   descripcion: string | null;
   precioVenta: string;
   imagenUrl: string | null;
+  modoUso: string | null;
+  ingredientes: string | null;
   stockDisponible: number;
 };
 
@@ -56,7 +58,15 @@ export async function crearPedido(payload: PedidoOnlinePayload): Promise<{ numer
   return data;
 }
 
-export type ServicioAgenda = { id: string; nombre: string; descripcion: string | null; duracionMinutos: number; precioVenta: string };
+export type ServicioAgenda = {
+  id: string;
+  nombre: string;
+  descripcion: string | null;
+  duracionMinutos: number;
+  precioVenta: string;
+  /** Productos de la tienda recomendados después de este tratamiento (cargados en el ERP). */
+  productosRecomendadosIds?: string[];
+};
 export type ProfesionalAgenda = { id: string; nombre: string; especialidad: string | null; sucursalId: string; sucursalNombre: string };
 export type SlotDisponible = { inicio: string; fin: string };
 export type ReservaPayload = {

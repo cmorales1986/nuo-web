@@ -16,7 +16,7 @@ function formatearGs(valor: number): string {
   return `Gs. ${Math.round(valor).toLocaleString("es-PY")}`;
 }
 
-export function ReservarWizard() {
+export function ReservarWizard({ servicioInicialId }: { servicioInicialId?: string }) {
   const { message } = App.useApp();
   const [paso, setPaso] = useState(0);
   const [cargandoServicios, setCargandoServicios] = useState(true);
@@ -41,8 +41,14 @@ export function ReservarWizard() {
       if (r.error) message.error(r.error);
       setServicios(r.servicios ?? []);
       setCargandoServicios(false);
+      // Llegó desde "Reservar este tratamiento": el servicio ya viene elegido, se salta al paso del horario.
+      const elegido = servicioInicialId ? (r.servicios ?? []).find((s) => s.id === servicioInicialId) : undefined;
+      if (elegido) {
+        setServicio(elegido);
+        setPaso(1);
+      }
     });
-  }, [message]);
+  }, [message, servicioInicialId]);
 
   useEffect(() => {
     if (!servicio) return;

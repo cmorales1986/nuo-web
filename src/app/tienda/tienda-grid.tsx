@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Row, Col, Card, Typography, Button, Empty, App } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import type { ProductoTienda } from "../../lib/erp-client";
@@ -49,7 +50,7 @@ export function TiendaGrid({ productos, ocultarTitulo }: { productos: ProductoTi
                 }
               >
                 <Card.Meta
-                  title={<span style={{ fontFamily: "var(--font-heading), serif", fontWeight: 400 }}>{p.nombre}</span>}
+                  title={<Link href={`/tienda/${p.id}`} style={{ fontFamily: "var(--font-heading), serif", fontWeight: 400, color: "inherit" }}>{p.nombre}</Link>}
                   description={
                     <>
                       <Text type="secondary" style={{ display: "block", minHeight: 40, fontSize: 13 }}>{p.descripcion || " "}</Text>
@@ -58,6 +59,7 @@ export function TiendaGrid({ productos, ocultarTitulo }: { productos: ProductoTi
                     </>
                   }
                 />
+                <Link href={`/tienda/${p.id}`} style={{ display: "block", textAlign: "center", marginTop: 12, fontSize: 13, color: "var(--nuo-taupe)", textDecoration: "underline" }}>Ver detalle del producto</Link>
                 <Button
                   type="primary"
                   block
