@@ -42,7 +42,7 @@ export type PedidoOnlinePayload = {
   correo?: string;
   entrega: "envio" | "retiro";
   direccion?: string;
-  metodoPago: "transferencia" | "contra_entrega";
+  metodoPago: "transferencia" | "contra_entrega" | "tarjeta";
   items: { productoId: string; cantidad: number }[];
   /** Kits comprados: el ERP calcula el descuento con sus propios precios. */
   kits?: { kitId: string; cantidad: number }[];
@@ -68,7 +68,7 @@ export async function obtenerProductos(): Promise<ProductoTienda[]> {
   return data.productos;
 }
 
-export async function crearPedido(payload: PedidoOnlinePayload): Promise<{ numeroDocumento?: string | null }> {
+export async function crearPedido(payload: PedidoOnlinePayload): Promise<{ numeroDocumento?: string | null; documentoId?: string; total?: number }> {
   const { baseUrl, secret } = config();
   const res = await fetch(`${baseUrl}/api/tienda/pedidos`, {
     method: "POST",
@@ -149,4 +149,23 @@ export async function obtenerKits(): Promise<KitTienda[]> {
   } catch {
     return [];
   }
+}
+
+export type PedidoParaPago = { documentoId: string; numeroDocumento: string | null; total: number; estadoPedido: string; clienteNombre: string };
+
+/** Datos del pedido para la pantalla de pago: el importe lo define el ERP (el navegador nunca lo manda). */
+export async function obtenerPedidoParaPago(documentoId: string): Promise<PedidoParaPago | null> {
+  const { baseUrl, secret } = config();
+  const res = await fetch(`${baseUrl}/api/tienda/pago?documentoId=${encodeURIComponent(documentoId)}`, { headers: { "X-Tienda-Secret": secret }, cache: "no-store" });
+  if (!res.ok) return null;
+  return (await res.json()).pedido ?? null;
+}
+
+/** Le avisa al ERP el resultado del pago. Nunca se envían datos de la tarjeta: solo resultado, referencia y últimos 4 dígitos. */
+export async function confirmarPago(params: { documentoId: string; resultado: "aprobado" | "rechazado"; referencia: string; ultimos4?: string }): Promise<{ estadoPedido?: string }> {
+  const { baseUrl, secret } = config();
+  const res = await fetch(`${baseUrl}/api/tienda/pago`, { method: "POST", headers: { "Content-Type": "application/json", "X-Tienda-Secret": secret }, body: JSON.stringify(params) });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error ?? "No se pudo registrar el pago.");
+  return data;
 }

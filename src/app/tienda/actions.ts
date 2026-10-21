@@ -3,7 +3,7 @@
 import { crearPedido, type PedidoOnlinePayload } from "../../lib/erp-client";
 
 /** El navegador nunca ve el secreto del ERP — pasa por esta Server Action, que corre en el servidor de este mismo proyecto. */
-export async function accionCrearPedidoOnline(payload: PedidoOnlinePayload): Promise<{ error?: string; numeroDocumento?: string | null }> {
+export async function accionCrearPedidoOnline(payload: PedidoOnlinePayload): Promise<{ error?: string; numeroDocumento?: string | null; documentoId?: string; total?: number }> {
   try {
     return await crearPedido(payload);
   } catch (err) {
