@@ -3,7 +3,7 @@
 # Uso (desde la carpeta del proyecto):  bash scripts/desplegar-aws.sh
 # Requiere: Docker abierto y la sesión de AWS iniciada (aws login).
 set -euo pipefail
-export AWS_REGION=us-east-2 AWS_DEFAULT_REGION=us-east-2
+export AWS_REGION=us-east-2 AWS_DEFAULT_REGION=us-east-2 AWS_PAGER=""
 CUENTA=203312548777
 SERVICIO=nuo-web
 IMAGEN="$CUENTA.dkr.ecr.us-east-2.amazonaws.com/$SERVICIO:latest"
