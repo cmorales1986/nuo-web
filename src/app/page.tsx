@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button, Row, Col } from "antd";
-import { obtenerProductos, obtenerServiciosAgenda, obtenerKits, type ServicioAgenda } from "../lib/erp-client";
+import { obtenerProductos, obtenerServiciosAgenda, obtenerKits, obtenerPruebaSocial, type ServicioAgenda } from "../lib/erp-client";
 import { TiendaGrid } from "./tienda/tienda-grid";
 import { GaleriaSection } from "./galeria-section";
 import { TratamientosSection } from "./tratamientos-section";
+import { TestimoniosSection } from "./testimonios-section";
+import { AntesDespuesSection } from "./antes-despues-section";
 import { Reveal } from "./reveal";
 import { HeroParallax } from "./hero-parallax";
 import { HeroCarousel } from "./hero-carousel";
@@ -19,6 +21,7 @@ export default async function Home() {
   // Si la agenda no responde, la portada sigue funcionando: los tratamientos llevan a /reservar sin servicio preelegido.
   const servicios: ServicioAgenda[] = await obtenerServiciosAgenda().catch(() => []);
   const kits = await obtenerKits();
+  const { testimonios, casos } = await obtenerPruebaSocial();
 
   return (
     <main>
@@ -217,6 +220,10 @@ export default async function Home() {
           <TratamientosSection servicios={servicios} productos={productos} kits={kits} />
         </Reveal>
       </section>
+
+      {/* Prueba social: resultados (solo casos con consentimiento) y testimonios */}
+      <AntesDespuesSection casos={casos} />
+      <TestimoniosSection testimonios={testimonios} urlGoogle={process.env.GOOGLE_RESENAS_URL} />
 
       {/* Destacados de la tienda */}
       {destacados.length > 0 && (

@@ -169,3 +169,41 @@ export async function confirmarPago(params: { documentoId: string; resultado: "a
   if (!res.ok) throw new Error(data.error ?? "No se pudo registrar el pago.");
   return data;
 }
+
+export type TestimonioWeb = {
+  id: string;
+  nombre: string;
+  texto: string;
+  estrellas: number;
+  fuente: string;
+  urlOrigen: string | null;
+  servicioNombre: string | null;
+  fecha: string | null;
+};
+
+export type CasoWeb = {
+  id: string;
+  titulo: string;
+  descripcion: string | null;
+  servicioId: string | null;
+  servicioNombre: string | null;
+  fotoAntesUrl: string;
+  fotoDespuesUrl: string;
+  detalleTiempo: string | null;
+};
+
+/**
+ * Testimonios publicados y casos de antes/después publicados (el ERP solo envía los que tienen consentimiento registrado).
+ * Si el ERP todavía no los ofrece o falla, el sitio sigue funcionando sin estas secciones.
+ */
+export async function obtenerPruebaSocial(): Promise<{ testimonios: TestimonioWeb[]; casos: CasoWeb[] }> {
+  const { baseUrl, secret } = config();
+  try {
+    const res = await fetch(`${baseUrl}/api/tienda/prueba-social`, { headers: { "X-Tienda-Secret": secret }, cache: "no-store" });
+    if (!res.ok) return { testimonios: [], casos: [] };
+    const data = await res.json();
+    return { testimonios: data.testimonios ?? [], casos: data.casos ?? [] };
+  } catch {
+    return { testimonios: [], casos: [] };
+  }
+}
