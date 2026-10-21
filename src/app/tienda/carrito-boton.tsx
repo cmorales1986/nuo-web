@@ -1,16 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { Badge, Button } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useCarrito } from "./cart-context";
 
 export function CarritoBoton({ claro = false }: { claro?: boolean }) {
-  const { totalItems } = useCarrito();
+  const { totalItems, abrirCarrito } = useCarrito();
   return (
-    <Link href="/tienda/carrito">
+    <span>
       <Badge count={totalItems} size="small">
         <Button
+          onClick={abrirCarrito}
           icon={<ShoppingCartOutlined />}
           style={
             claro
@@ -21,6 +21,6 @@ export function CarritoBoton({ claro = false }: { claro?: boolean }) {
           Carrito
         </Button>
       </Badge>
-    </Link>
+    </span>
   );
 }

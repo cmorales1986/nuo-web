@@ -4,6 +4,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider, App as AntApp } from "antd";
 import esES from "antd/locale/es_ES";
 import { CarritoProvider } from "./tienda/cart-context";
+import { CarritoDrawer } from "./tienda/carrito-drawer";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import "./globals.css";
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <SiteHeader />
                 {children}
                 <SiteFooter />
+                <CarritoDrawer />
               </CarritoProvider>
             </AntApp>
           </ConfigProvider>

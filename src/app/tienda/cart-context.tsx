@@ -3,13 +3,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 /** Una línea de kit usa `productoId = "kit:<id>"` y trae `kitId`; así convive con los productos sueltos sin tocar el resto del carrito. */
-export type ItemCarrito = { productoId: string; nombre: string; precioVenta: number; cantidad: number; kitId?: string };
+export type ItemCarrito = { productoId: string; nombre: string; precioVenta: number; cantidad: number; kitId?: string; imagenUrl?: string | null };
 
 const CLAVE_STORAGE = "nuo-tienda-carrito";
 
 type CarritoContextType = {
   items: ItemCarrito[];
-  agregar: (item: Omit<ItemCarrito, "cantidad">, cantidad?: number) => void;
+  /** Agrega al carrito y, salvo que se indique `abrir: false`, abre el carrito lateral. */
+  agregar: (item: Omit<ItemCarrito, "cantidad">, cantidad?: number, opciones?: { abrir?: boolean }) => void;
+  abierto: boolean;
+  abrirCarrito: () => void;
+  cerrarCarrito: () => void;
   quitar: (productoId: string) => void;
   actualizarCantidad: (productoId: string, cantidad: number) => void;
   vaciar: () => void;
@@ -22,6 +26,7 @@ const CarritoContext = createContext<CarritoContextType | null>(null);
 export function CarritoProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ItemCarrito[]>([]);
   const [cargado, setCargado] = useState(false);
+  const [abierto, setAbierto] = useState(false);
 
   // A propósito en un efecto (no lazy-init de useState): el server siempre
   // renderiza el carrito vacío, así que hidratar sincrónicamente desde
@@ -47,7 +52,11 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
     }
   }, [items, cargado]);
 
-  const agregar = useCallback((item: Omit<ItemCarrito, "cantidad">, cantidad = 1) => {
+  const abrirCarrito = useCallback(() => setAbierto(true), []);
+  const cerrarCarrito = useCallback(() => setAbierto(false), []);
+
+  const agregar = useCallback((item: Omit<ItemCarrito, "cantidad">, cantidad = 1, opciones?: { abrir?: boolean }) => {
+    if (opciones?.abrir !== false) setAbierto(true);
     setItems((prev) => {
       const existente = prev.find((i) => i.productoId === item.productoId);
       if (existente) return prev.map((i) => (i.productoId === item.productoId ? { ...i, cantidad: i.cantidad + cantidad } : i));
@@ -67,7 +76,7 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
 
   const totalItems = useMemo(() => items.reduce((s, i) => s + i.cantidad, 0), [items]);
 
-  return <CarritoContext.Provider value={{ items, agregar, quitar, actualizarCantidad, vaciar, totalItems }}>{children}</CarritoContext.Provider>;
+  return <CarritoContext.Provider value={{ items, agregar, quitar, actualizarCantidad, vaciar, totalItems, abierto, abrirCarrito, cerrarCarrito }}>{children}</CarritoContext.Provider>;
 }
 
 export function useCarrito(): CarritoContextType {

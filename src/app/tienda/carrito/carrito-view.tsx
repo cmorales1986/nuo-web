@@ -81,7 +81,7 @@ export function CarritoView({ productos, kits }: { productos: ProductoTienda[]; 
                 <Text type="secondary" style={{ fontSize: 12, display: "block" }}>Combina muy bien con {motivo}</Text>
                 <Link href={`/tienda/${producto.id}`} style={{ fontWeight: 500, color: "inherit", display: "block", margin: "4px 0" }}>{producto.nombre}</Link>
                 <Text strong style={{ color: "var(--nuo-terracota)" }}>{formatearGs(Number(producto.precioVenta))}</Text>
-                <Button block style={{ marginTop: 10 }} onClick={() => agregar({ productoId: producto.id, nombre: producto.nombre, precioVenta: Number(producto.precioVenta) })}>
+                <Button block style={{ marginTop: 10 }} onClick={() => agregar({ productoId: producto.id, nombre: producto.nombre, precioVenta: Number(producto.precioVenta), imagenUrl: producto.imagenUrl }, 1, { abrir: false })}>
                   Agregar
                 </Button>
               </div>

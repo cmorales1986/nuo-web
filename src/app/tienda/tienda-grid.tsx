@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Row, Col, Card, Typography, Button, Empty, App } from "antd";
+import { Row, Col, Card, Typography, Button, Empty } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import type { ProductoTienda } from "../../lib/erp-client";
 import { useCarrito } from "./cart-context";
@@ -14,7 +14,6 @@ function formatearGs(valor: number): string {
 
 export function TiendaGrid({ productos, ocultarTitulo }: { productos: ProductoTienda[]; ocultarTitulo?: boolean }) {
   const { agregar } = useCarrito();
-  const { message } = App.useApp();
 
   if (productos.length === 0) {
     return <Empty description="Todavía no hay productos publicados en la tienda." style={{ marginTop: 80 }} />;
@@ -67,8 +66,7 @@ export function TiendaGrid({ productos, ocultarTitulo }: { productos: ProductoTi
                   style={{ marginTop: 14 }}
                   disabled={sinStock}
                   onClick={() => {
-                    agregar({ productoId: p.id, nombre: p.nombre, precioVenta: Number(p.precioVenta) });
-                    message.success(`"${p.nombre}" agregado al carrito.`);
+                    agregar({ productoId: p.id, nombre: p.nombre, precioVenta: Number(p.precioVenta), imagenUrl: p.imagenUrl });
                   }}
                 >
                   Agregar al carrito

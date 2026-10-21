@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Typography, Button, Tag, App } from "antd";
+import { Card, Typography, Button, Tag } from "antd";
 import { GiftOutlined } from "@ant-design/icons";
 import type { KitTienda } from "../../lib/erp-client";
 import { useCarrito } from "./cart-context";
@@ -13,7 +13,6 @@ function formatearGs(valor: number): string {
 
 export function KitsSection({ kits }: { kits: KitTienda[] }) {
   const { agregar } = useCarrito();
-  const { message } = App.useApp();
   if (kits.length === 0) return null;
 
   return (
@@ -54,8 +53,7 @@ export function KitsSection({ kits }: { kits: KitTienda[] }) {
                 icon={<GiftOutlined />}
                 disabled={sinStock}
                 onClick={() => {
-                  agregar({ productoId: `kit:${k.id}`, kitId: k.id, nombre: `Kit: ${k.nombre}`, precioVenta: k.precioKit });
-                  message.success(`"${k.nombre}" agregado al carrito.`);
+                  agregar({ productoId: `kit:${k.id}`, kitId: k.id, nombre: `Kit: ${k.nombre}`, precioVenta: k.precioKit, imagenUrl: k.imagenUrl });
                 }}
               >
                 {sinStock ? "Sin stock por ahora" : "Agregar kit al carrito"}

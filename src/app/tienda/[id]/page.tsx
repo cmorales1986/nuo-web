@@ -41,7 +41,7 @@ export default async function ProductoPage({ params }: { params: Promise<{ id: s
 
   return (
     <div className="nuo-below-header">
-      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "28px 16px 80px" }}>
+      <div className="nuo-ficha-producto" style={{ maxWidth: 1040, margin: "0 auto", padding: "28px 16px 80px" }}>
         <nav aria-label="Ubicación" style={{ fontSize: 13, color: "var(--nuo-taupe)" }}>
           <Link href="/tienda">Tienda</Link> / {producto.categoriaNombre} / <span style={{ color: "var(--foreground)" }}>{producto.nombre}</span>
         </nav>
@@ -57,7 +57,7 @@ export default async function ProductoPage({ params }: { params: Promise<{ id: s
               {sinStock ? "Sin stock por ahora" : pocoStock ? `Quedan ${producto.stockDisponible} unidades` : "En stock"}
             </div>
 
-            <AgregarAlCarrito productoId={producto.id} nombre={producto.nombre} precioVenta={Number(producto.precioVenta)} sinStock={sinStock} stockDisponible={producto.stockDisponible} />
+            <AgregarAlCarrito productoId={producto.id} nombre={producto.nombre} precioVenta={Number(producto.precioVenta)} sinStock={sinStock} stockDisponible={producto.stockDisponible} imagenUrl={producto.imagenUrl} />
 
             {tratamientos.length > 0 && (
               <div style={{ marginTop: 22, background: "#faf5f2", borderRadius: 10, padding: "12px 14px", fontSize: 13 }}>

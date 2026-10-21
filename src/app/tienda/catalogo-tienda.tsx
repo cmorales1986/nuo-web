@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Button, Checkbox, Empty, Input, Select, Slider, Typography, App } from "antd";
+import { Button, Checkbox, Empty, Input, Select, Slider, Typography } from "antd";
 import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import type { KitTienda, ProductoTienda } from "../../lib/erp-client";
 import { useCarrito } from "./cart-context";
@@ -28,7 +28,6 @@ const STOCK_BAJO = 5;
 
 export function CatalogoTienda({ productos, kits }: { productos: ProductoTienda[]; kits: KitTienda[] }) {
   const { agregar } = useCarrito();
-  const { message } = App.useApp();
 
   const precios = productos.map((p) => Number(p.precioVenta));
   const minPrecio = precios.length ? Math.min(...precios) : 0;
@@ -206,8 +205,7 @@ export function CatalogoTienda({ productos, kits }: { productos: ProductoTienda[
                           disabled={sinStock}
                           style={{ marginTop: "auto" }}
                           onClick={() => {
-                            agregar({ productoId: p.id, nombre: p.nombre, precioVenta: Number(p.precioVenta) });
-                            message.success(`"${p.nombre}" agregado al carrito.`);
+                            agregar({ productoId: p.id, nombre: p.nombre, precioVenta: Number(p.precioVenta), imagenUrl: p.imagenUrl });
                           }}
                         >
                           Agregar

@@ -81,10 +81,10 @@ export function CheckoutView({ pagoSimulado }: { pagoSimulado: boolean }) {
     }
 
     return (
-      <Card style={{ maxWidth: 480, margin: "0 auto", borderRadius: 10, border: "1px solid #f0eeeb" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24, alignItems: "start", maxWidth: 940, margin: "0 auto" }}>
+      <Card style={{ borderRadius: 10, border: "1px solid #f0eeeb" }}>
         <Title level={2}>Confirmar pedido</Title>
-        <Text type="secondary" style={{ display: "block", marginBottom: 20 }}>Total: {formatearGs(total)}</Text>
-        <Form form={form} layout="vertical" onFinish={confirmar} disabled={enviando}>
+                <Form form={form} layout="vertical" onFinish={confirmar} disabled={enviando}>
           <Form.Item name="nombre" label="Nombre y apellido" rules={[{ required: true, message: "Ingresá tu nombre" }]}>
             <Input placeholder="Ana Pérez" />
           </Form.Item>
@@ -125,6 +125,33 @@ export function CheckoutView({ pagoSimulado }: { pagoSimulado: boolean }) {
           </Button>
         </Form>
       </Card>
+      <Card style={{ borderRadius: 10, border: "1px solid #f0eeeb", position: "sticky", top: 96, background: "#faf8f6" }} title="Resumen del pedido">
+        <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          {items.map((i) => (
+            <li key={i.productoId} style={{ display: "flex", gap: 12, alignItems: "center", padding: "10px 0", borderBottom: "1px solid #f0eeeb" }}>
+              {i.imagenUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={i.imagenUrl} alt="" style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 6, flexShrink: 0 }} />
+              ) : (
+                <div style={{ width: 48, height: 48, borderRadius: 6, background: "#F7F4F1", flexShrink: 0 }} />
+              )}
+              <div style={{ flex: 1, minWidth: 0, fontSize: 13, lineHeight: 1.35 }}>
+                {i.nombre}
+                <div style={{ color: "var(--nuo-taupe)" }}>Cantidad: {i.cantidad}</div>
+              </div>
+              <Text style={{ fontSize: 13, whiteSpace: "nowrap" }}>{formatearGs(i.precioVenta * i.cantidad)}</Text>
+            </li>
+          ))}
+        </ul>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 14 }}>
+          <Text strong>Total</Text>
+          <Text strong style={{ fontSize: 20, color: "var(--nuo-terracota)" }}>{formatearGs(total)}</Text>
+        </div>
+        <Link href="/tienda/carrito" style={{ display: "block", marginTop: 12, fontSize: 13, color: "var(--nuo-taupe)", textDecoration: "underline" }}>
+          Modificar carrito
+        </Link>
+      </Card>
+      </div>
     );
   };
 
