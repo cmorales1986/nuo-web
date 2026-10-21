@@ -13,6 +13,9 @@ export type ProductoTienda = {
   descripcion: string | null;
   precioVenta: string;
   imagenUrl: string | null;
+  /** Fotos adicionales para la galería de la ficha. */
+  imagenesExtra: string[];
+  categoriaNombre: string;
   modoUso: string | null;
   ingredientes: string | null;
   stockDisponible: number;

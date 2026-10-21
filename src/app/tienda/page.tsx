@@ -1,6 +1,5 @@
 import { obtenerProductos, obtenerKits } from "../../lib/erp-client";
-import { KitsSection } from "./kits-section";
-import { TiendaGrid } from "./tienda-grid";
+import { CatalogoTienda } from "./catalogo-tienda";
 
 export const dynamic = "force-dynamic";
 
@@ -15,9 +14,8 @@ export default async function TiendaPage() {
           Retiro en el local o envío a domicilio. Pago por transferencia o contra entrega.
         </p>
       </div>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "40px 16px" }}>
-        <KitsSection kits={kits} />
-        <TiendaGrid productos={productos} ocultarTitulo />
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "40px 16px" }}>
+        <CatalogoTienda productos={productos} kits={kits} />
       </div>
     </div>
   );
