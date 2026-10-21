@@ -38,6 +38,8 @@ export default async function ProductoPage({ params }: { params: Promise<{ id: s
   // Otros productos para completar la rutina: los recomendados junto a los mismos tratamientos.
   const idsRelacionados = new Set(tratamientos.flatMap((s) => s.productosRecomendadosIds ?? []));
   idsRelacionados.delete(producto.id);
+  // Venta cruzada cargada a mano en el ERP tiene prioridad sobre lo que se deduce de los tratamientos.
+  for (const sid of producto.sugeridosIds ?? []) idsRelacionados.add(sid);
   const relacionados = productos.filter((p) => idsRelacionados.has(p.id));
 
   return (
@@ -83,7 +85,7 @@ export default async function ProductoPage({ params }: { params: Promise<{ id: s
 
         {relacionados.length > 0 && (
           <section style={{ marginTop: 56 }}>
-            <h2 style={{ fontSize: 22, marginBottom: 16 }}>Completá tu rutina</h2>
+            <h2 style={{ fontSize: 22, marginBottom: 16 }}>Combina muy bien con</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
               {relacionados.map((p) => (
                 <Link key={p.id} href={`/tienda/${p.id}`} style={{ border: "1px solid #f0eeeb", borderRadius: 10, padding: 14, display: "block", color: "inherit" }}>

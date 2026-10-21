@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button, Row, Col } from "antd";
-import { obtenerProductos, obtenerServiciosAgenda, type ServicioAgenda } from "../lib/erp-client";
+import { obtenerProductos, obtenerServiciosAgenda, obtenerKits, type ServicioAgenda } from "../lib/erp-client";
 import { TiendaGrid } from "./tienda/tienda-grid";
 import { GaleriaSection } from "./galeria-section";
 import { TratamientosSection } from "./tratamientos-section";
@@ -18,6 +18,7 @@ export default async function Home() {
   const destacados = productos.slice(0, 3);
   // Si la agenda no responde, la portada sigue funcionando: los tratamientos llevan a /reservar sin servicio preelegido.
   const servicios: ServicioAgenda[] = await obtenerServiciosAgenda().catch(() => []);
+  const kits = await obtenerKits();
 
   return (
     <main>
@@ -213,7 +214,7 @@ export default async function Home() {
           </p>
         </Reveal>
         <Reveal delay={100}>
-          <TratamientosSection servicios={servicios} productos={productos} />
+          <TratamientosSection servicios={servicios} productos={productos} kits={kits} />
         </Reveal>
       </section>
 

@@ -2,7 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-export type ItemCarrito = { productoId: string; nombre: string; precioVenta: number; cantidad: number };
+/** Una línea de kit usa `productoId = "kit:<id>"` y trae `kitId`; así convive con los productos sueltos sin tocar el resto del carrito. */
+export type ItemCarrito = { productoId: string; nombre: string; precioVenta: number; cantidad: number; kitId?: string };
 
 const CLAVE_STORAGE = "nuo-tienda-carrito";
 

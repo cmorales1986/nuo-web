@@ -16,6 +16,21 @@ export type ProductoTienda = {
   modoUso: string | null;
   ingredientes: string | null;
   stockDisponible: number;
+  /** Venta cruzada: productos que combinan con este (cargados en el ERP). */
+  sugeridosIds?: string[];
+};
+
+export type KitTienda = {
+  id: string;
+  nombre: string;
+  descripcion: string | null;
+  imagenUrl: string | null;
+  descuentoPorcentaje: number;
+  servicioId: string | null;
+  items: { productoId: string; nombre: string; cantidad: number; precioUnitario: number }[];
+  precioSeparado: number;
+  precioKit: number;
+  stockDisponible: number;
 };
 
 export type PedidoOnlinePayload = {
@@ -26,6 +41,10 @@ export type PedidoOnlinePayload = {
   direccion?: string;
   metodoPago: "transferencia" | "contra_entrega";
   items: { productoId: string; cantidad: number }[];
+  /** Kits comprados: el ERP calcula el descuento con sus propios precios. */
+  kits?: { kitId: string; cantidad: number }[];
+  /** El cliente aceptó recibir recordatorios de reposición por WhatsApp. */
+  aceptaRecordatorios?: boolean;
 };
 
 function config() {
@@ -114,4 +133,17 @@ export async function crearReserva(payload: ReservaPayload): Promise<{ ok?: bool
   const data = await res.json();
   if (!res.ok) throw new Error(data.error ?? "No se pudo registrar la reserva.");
   return data;
+}
+
+/** Kits de la tienda. Si el ERP todavía no los ofrece (o falla), la tienda sigue funcionando sin ellos. */
+export async function obtenerKits(): Promise<KitTienda[]> {
+  const { baseUrl, secret } = config();
+  try {
+    const res = await fetch(`${baseUrl}/api/tienda/kits`, { headers: { "X-Tienda-Secret": secret }, cache: "no-store" });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.kits ?? [];
+  } catch {
+    return [];
+  }
 }

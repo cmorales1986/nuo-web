@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Form, Input, Radio, Button, Typography, Empty, Result, App, Card } from "antd";
+import { Form, Input, Radio, Button, Typography, Empty, Result, App, Card, Checkbox } from "antd";
 import { useCarrito } from "../cart-context";
 import { accionCrearPedidoOnline } from "../actions";
 
@@ -22,7 +22,7 @@ export default function CheckoutPage() {
 
   const total = items.reduce((s, i) => s + i.precioVenta * i.cantidad, 0);
 
-  async function confirmar(valores: { nombre: string; telefono: string; correo?: string; direccion?: string; metodoPago: "transferencia" | "contra_entrega" }) {
+  async function confirmar(valores: { nombre: string; telefono: string; correo?: string; direccion?: string; metodoPago: "transferencia" | "contra_entrega"; aceptaRecordatorios?: boolean }) {
     setEnviando(true);
     try {
       const resultado = await accionCrearPedidoOnline({
@@ -32,7 +32,9 @@ export default function CheckoutPage() {
         entrega,
         direccion: entrega === "envio" ? valores.direccion : undefined,
         metodoPago: valores.metodoPago,
-        items: items.map((i) => ({ productoId: i.productoId, cantidad: i.cantidad })),
+        items: items.filter((i) => !i.kitId).map((i) => ({ productoId: i.productoId, cantidad: i.cantidad })),
+        kits: items.filter((i) => i.kitId).map((i) => ({ kitId: i.kitId!, cantidad: i.cantidad })),
+        aceptaRecordatorios: valores.aceptaRecordatorios === true,
       });
       if (resultado.error) {
         message.error(resultado.error);
@@ -101,6 +103,9 @@ export default function CheckoutPage() {
               <Radio.Button value="transferencia">Transferencia bancaria</Radio.Button>
               <Radio.Button value="contra_entrega">Contra entrega</Radio.Button>
             </Radio.Group>
+          </Form.Item>
+          <Form.Item name="aceptaRecordatorios" valuePropName="checked" initialValue={false}>
+            <Checkbox>Quiero recibir por WhatsApp un recordatorio cuando sea momento de reponer mis productos.</Checkbox>
           </Form.Item>
           <Button type="primary" htmlType="submit" block size="large" loading={enviando}>
             Confirmar pedido

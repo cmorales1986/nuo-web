@@ -1,10 +1,11 @@
-import { obtenerProductos } from "../../lib/erp-client";
+import { obtenerProductos, obtenerKits } from "../../lib/erp-client";
+import { KitsSection } from "./kits-section";
 import { TiendaGrid } from "./tienda-grid";
 
 export const dynamic = "force-dynamic";
 
 export default async function TiendaPage() {
-  const productos = await obtenerProductos();
+  const [productos, kits] = await Promise.all([obtenerProductos(), obtenerKits()]);
   return (
     <div className="nuo-below-header">
       <div style={{ background: "#F7F4F1", padding: "48px 16px", textAlign: "center" }}>
@@ -15,6 +16,7 @@ export default async function TiendaPage() {
         </p>
       </div>
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "40px 16px" }}>
+        <KitsSection kits={kits} />
         <TiendaGrid productos={productos} ocultarTitulo />
       </div>
     </div>

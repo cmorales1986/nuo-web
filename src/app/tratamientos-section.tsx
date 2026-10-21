@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Tabs, Card, Typography, Tag, Button } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
-import type { ProductoTienda, ServicioAgenda } from "../lib/erp-client";
+import type { KitTienda, ProductoTienda, ServicioAgenda } from "../lib/erp-client";
 import { buscarServicioPorNombre } from "../lib/servicios";
 
 const { Text } = Typography;
@@ -118,7 +118,7 @@ function formatearGs(valor: number): string {
   return `${Math.round(valor).toLocaleString("es-PY")} gs`;
 }
 
-function TarjetasTratamiento({ items: itemsBase, servicios, productos }: { items: Tratamiento[]; servicios: ServicioAgenda[]; productos: ProductoTienda[] }) {
+function TarjetasTratamiento({ items: itemsBase, servicios, productos, kits }: { items: Tratamiento[]; servicios: ServicioAgenda[]; productos: ProductoTienda[]; kits: KitTienda[] }) {
   // Un tratamiento que ya existe como servicio en el ERP se muestra como tarjeta completa (con precio y botón
   // de reserva) aunque en la web no tenga precio fijo: se toma el del ERP.
   const items = itemsBase.map((t) => {
@@ -165,6 +165,24 @@ function TarjetasTratamiento({ items: itemsBase, servicios, productos }: { items
                   </div>
                 );
               })()}
+              {(() => {
+                const servicioId = buscarServicioPorNombre(t.nombre, servicios)?.id;
+                const kitsDelTratamiento = servicioId ? kits.filter((k) => k.servicioId === servicioId) : [];
+                if (kitsDelTratamiento.length === 0) return null;
+                return (
+                  <div style={{ marginTop: 12 }}>
+                    <Text style={{ fontSize: 12, color: "var(--nuo-taupe)", display: "block", marginBottom: 6 }}>Kit post-tratamiento</Text>
+                    {kitsDelTratamiento.map((k) => (
+                      <Link key={k.id} href={`/tienda#kit-${k.id}`}>
+                        <Tag color="gold" style={{ cursor: "pointer", borderRadius: 14, padding: "2px 10px" }}>
+                          {k.nombre}
+                          {k.descuentoPorcentaje > 0 ? ` · -${Math.round(k.descuentoPorcentaje)}%` : ""}
+                        </Tag>
+                      </Link>
+                    ))}
+                  </div>
+                );
+              })()}
               <Link href={hrefReserva(t, servicios)}>
                 <Button type="primary" block icon={<CalendarOutlined />} style={{ marginTop: 16 }}>
                   Reservar este tratamiento
@@ -201,13 +219,13 @@ function TarjetasTratamiento({ items: itemsBase, servicios, productos }: { items
   );
 }
 
-export function TratamientosSection({ servicios, productos }: { servicios: ServicioAgenda[]; productos: ProductoTienda[] }) {
+export function TratamientosSection({ servicios, productos, kits }: { servicios: ServicioAgenda[]; productos: ProductoTienda[]; kits: KitTienda[] }) {
   return (
     <Tabs
       items={CATEGORIAS.map((c) => ({
         key: c.key,
         label: c.label,
-        children: <TarjetasTratamiento items={c.items} servicios={servicios} productos={productos} />,
+        children: <TarjetasTratamiento items={c.items} servicios={servicios} productos={productos} kits={kits} />,
       }))}
     />
   );
