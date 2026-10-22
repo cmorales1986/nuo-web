@@ -12,7 +12,7 @@ echo "1/3 Iniciando sesión en el registro de imágenes..."
 aws ecr get-login-password | docker login --username AWS --password-stdin "$CUENTA.dkr.ecr.us-east-2.amazonaws.com" >/dev/null
 
 echo "2/3 Construyendo y subiendo la imagen (puede tardar unos minutos)..."
-docker buildx build --platform linux/amd64 -t "$IMAGEN" --push .
+docker buildx build -f Dockerfile.aws --platform linux/amd64 -t "$IMAGEN" --push .
 
 echo "3/3 Reiniciando el servicio con la imagen nueva..."
 ARN=$(aws apprunner list-services --query "ServiceSummaryList[?ServiceName=='$SERVICIO'].ServiceArn" --output text)
